@@ -91,6 +91,19 @@ router.delete("/:isbn", getBookByIsbn, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+router.delete("/delete/:id", async (req, res) => {
+  console.log("delete " + req.params.id);
+  try {
+    await Book.findByIdAndDelete(req.params.id);
+    console.log(res.book)
+    res.json({ message: "Deleted Book" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
   
 //finding user by email
 /*router.get("/:isbn", getBookByIsbn, (req, res) => {

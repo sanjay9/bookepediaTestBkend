@@ -30,7 +30,8 @@ const bookSchema = new mongoose.Schema({
   views: {type: Number, default: 0},
   condition: {
     type: String,
-  }
+  },
+  sold: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model("Book", bookSchema);
