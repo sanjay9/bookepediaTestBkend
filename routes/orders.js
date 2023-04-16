@@ -20,7 +20,7 @@ router.put("/:isbn", async (req, res) => {
 //active orders
 router.get("/", async (req, res) => {
   try {
-    const orders = await Order.find({ status: { $ne: 'Delivered' } }).sort({
+    const orders = await Order.find({ status: { $ne: "Delivered" } }).sort({
       createdAt: "desc",
     });
     res.json(orders);
@@ -28,13 +28,12 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 //get orders by user email
 router.get("/user-orders/:buyerEmail", async (req, res) => {
   buyerEmail = req.params.buyerEmail;
   try {
-    const orders = await Order.find({buyerEmail: buyerEmail}).sort({
+    const orders = await Order.find({ buyerEmail: buyerEmail }).sort({
       createdAt: "desc",
     });
     res.json(orders);
@@ -42,7 +41,6 @@ router.get("/user-orders/:buyerEmail", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 //Creating one order
 router.post("/add-order", async (req, res) => {
@@ -53,7 +51,7 @@ router.post("/add-order", async (req, res) => {
     orderId: req.body.orderId,
     isbn: req.body.isbn,
     price: req.body.price,
-    conditionVerification : req.body.conditionVerification
+    conditionVerification: req.body.conditionVerification,
   });
   console.log(order);
   try {
@@ -72,7 +70,8 @@ router.post("/add-order", async (req, res) => {
 
 //status update
 router.put("/statusUpdate/:id", async (req, res) => {
-  const { id } = req.params; console.log(id);
+  const { id } = req.params;
+  console.log(id);
   const status = req.body.status;
   console.log(status);
   try {
@@ -80,11 +79,19 @@ router.put("/statusUpdate/:id", async (req, res) => {
     console.log(order);
     res.json(order);
   } catch (error) {
-    
     res.status(400).json({ message: error.message });
   }
 });
 
-
+router.delete("/delete-order/:id", async (req, res) => {
+  console.log("delete " + req.params.id);
+  try {
+    await Order.findByIdAndDelete(req.params.id);
+    console.log(res.order)
+    res.json({ message: "Deleted Order" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;
